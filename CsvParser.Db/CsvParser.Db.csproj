@@ -8,8 +8,6 @@
 
   <ItemGroup>
     <Folder Include="Extensions\" />
-    <Folder Include="Interfaces\" />
-    <Folder Include="Repository\" />
     <Folder Include="SqlScripts\" />
   </ItemGroup>
 
