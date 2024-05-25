@@ -4,7 +4,7 @@ using System.Text.RegularExpressions;
 
 namespace CsvParser.Common.ValidationAttributes
 {
-    public class CurrencyAmountAttribute : ValidationAttribute
+    public class DollarCurrencyAmountAttribute : ValidationAttribute
     {
         protected override ValidationResult IsValid(object value, ValidationContext validationContext)
         {

@@ -1,6 +1,4 @@
-﻿
-
-using CsvParser.Common.ValidationAttributes;
+﻿using CsvParser.Common.ValidationAttributes;
 using System.ComponentModel.DataAnnotations;
 
 namespace CsvParser.Db.DbEntities
@@ -8,13 +6,16 @@ namespace CsvParser.Db.DbEntities
     public class ApplicationTransaction
     {
         public Guid Id { get; set; }
+
         [Required]
         [MaxLength(200)]
         public string ApplicationName { get; set; }
+
         [Required]
         [EmailAddress]
         [MaxLength(200)]
         public string Email { get; set; }
+
         [MaxLength(300)]
         [FileNameExtensions(ValidExtensions = new string[] { "png", "mp3", "tiff", "xls", "pdf" })]
         public string Filename { get; set; }
@@ -26,7 +27,7 @@ namespace CsvParser.Db.DbEntities
         [PastDate]
         public DateTime Inception { get; set; }
         [Required]
-        [CurrencyAmount]
+        [DollarCurrencyAmount]
         public string Amount { get; set; }
 
         [Range(0, 100)]
