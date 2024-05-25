@@ -21,9 +21,16 @@ namespace CsvParser.Api.Controllers
 
             try
             {
-                var transactions = await _csvTransactionParsingService.ParseCsvAsync(file);
-                               
-                return Ok(transactions);
+                var success = await _csvTransactionParsingService.UploadCsvAsync(file);
+
+                if (success)
+                {
+                    return Ok("File uploaded and processed successfully.");
+                }
+                else
+                {
+                    return StatusCode(500, "Error processing the file.");
+                }
             }
             catch (Exception ex)
             {

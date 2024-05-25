@@ -8,7 +8,7 @@ namespace CsvParser.Service.Mapping
     {
         public ApplicationTransactionMap()
         {
-            Map(m => m.Id).Ignore();
+            Map(m => m.Id).TypeConverter<CustomGuidConverter>(); ;
             Map(m => m.ApplicationName);
             Map(m => m.Email);
             Map(m => m.Filename);

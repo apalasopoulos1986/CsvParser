@@ -1,7 +1,7 @@
 CREATE DATABASE Transactions;
 
 
-CREATE TABLE ApplicationTransaction (
+CREATE TABLE ApplicationTransactions (
     Id UNIQUEIDENTIFIER NOT NULL PRIMARY KEY DEFAULT NEWID(), 
     ApplicationName NVARCHAR(200) NOT NULL, 
     Email NVARCHAR(200) NOT NULL, 

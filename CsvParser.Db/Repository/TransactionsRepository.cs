@@ -2,8 +2,7 @@
 using CsvParser.Db.DbEntities;
 using CsvParser.Db.Interfaces;
 using Dapper;
-using System.Data.Common;
-using System.Transactions;
+
 
 
 
@@ -16,18 +15,20 @@ namespace CsvParser.Db.Repository
         public TransactionsRepository(DapperContext context)=>_context = context;
 
         private static string UpsertTransactionsQuery = @" MERGE ApplicationTransactions AS target 
-                                                          USING (SELECT @Id AS Id) AS source
-                                                          ON (target.Id = source.Id) WHEN MATCHED THEN 
-                                                          UPDATE SET ApplicationName = @ApplicationName,
-                                                          Email = @Email, 
-                                                          Filename = @Filename,
-                                                          Url = @Url,
-                                                          Inception =@Inception, 
-                                                          Amount = @Amount,
-                                                          Allocation = @Allocation
-                                                          WHEN NOT MATCHED THEN
-                                                          INSERT (Id, ApplicationName, Email, Filename, Url, Inception, Amount, Allocation)
-                                                          VALUES (@Id, @ApplicationName, @Email, @Filename, @Url, @Inception, @Amount, @Allocation); 
+                                                           USING (SELECT @Id AS Id) AS source
+                                                           ON (target.Id = source.Id)
+                                                           WHEN MATCHED THEN 
+                                                           UPDATE SET 
+                                                           ApplicationName = @ApplicationName,
+                                                           Email = @Email, 
+                                                           Filename = @Filename,
+                                                           Url = @Url,
+                                                           Inception = @Inception, 
+                                                           Amount = @Amount,
+                                                           Allocation = @Allocation
+                                                           WHEN NOT MATCHED THEN
+                                                           INSERT (Id, ApplicationName, Email, Filename, Url, Inception, Amount, Allocation)
+                                                           VALUES (@Id, @ApplicationName, @Email, @Filename, @Url, @Inception, @Amount, @Allocation); 
                                                           ";
 
 

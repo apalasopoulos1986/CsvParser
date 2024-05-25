@@ -10,6 +10,6 @@ namespace CsvParser.Service.Interfaces
 {
     public interface ICsvTransactionParsingService
     {
-        public Task<List<ApplicationTransaction>> ParseCsvAsync(IFormFile file);
+        public Task<bool> UploadCsvAsync(IFormFile file);
     }
 }
