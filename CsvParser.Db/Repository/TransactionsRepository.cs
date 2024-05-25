@@ -2,7 +2,9 @@
 using CsvParser.Db.DbEntities;
 using CsvParser.Db.Interfaces;
 using Dapper;
-using System.Data.SqlClient;
+using System.Data.Common;
+using System.Transactions;
+
 
 
 namespace CsvParser.Db.Repository
@@ -40,6 +42,12 @@ namespace CsvParser.Db.Repository
         private static string DeleteTransactionQuery = @" DELETE FROM ApplicationTransactions WHERE Id = @Id ";
 
 
+        private static string ExistingCurrencyAmountQuery = @" SELECT Amount FROM ApplicationTransactions WHERE Id = @Id ";
+
+
+        private static string IsUpdateQuery = @" SELECT COUNT(1) FROM ApplicationTransactions WHERE Id = @Id ";
+
+
         public void UpsertTransaction(ApplicationTransaction transaction)
         {
             using (var connection = _context.CreateConnection())
@@ -74,6 +82,32 @@ namespace CsvParser.Db.Repository
             }
         }
 
+      
+
+        public bool IsUpdate(Guid id)
+        {
+            using (var connection = _context.CreateConnection())
+            {
+                var isUpdate= connection.QuerySingleOrDefault<int>(IsUpdateQuery, new { Id=id }) > 0;
+
+                return isUpdate;
+            }
+        }
+
+        public bool IsSameCurrency(ApplicationTransaction transaction)
+        {
+            using (var connection = _context.CreateConnection())
+            {
+                var existingCurrencyAmount = connection.QuerySingleOrDefault<ApplicationTransaction>(ExistingCurrencyAmountQuery, new { transaction.Id });
+
+                if (existingCurrencyAmount == null) return true;
+
+                var existingCurrencySymbol = existingCurrencyAmount.Amount[0];
+                var newCurrencySymbol = transaction.Amount[0];
+
+                return existingCurrencySymbol == newCurrencySymbol;
+            }
+        }
 
     }
 }

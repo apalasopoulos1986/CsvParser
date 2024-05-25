@@ -1,11 +1,15 @@
 using CsvParser.Api.Configuration;
+using CsvParser.Db.Context;
+using CsvParser.Db.Interfaces;
+using CsvParser.Db.Repository;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
+builder.Services.AddSingleton<DapperContext>();
+builder.Services.AddScoped<ITransactionsRepository,TransactionsRepository>();
 builder.Services.AddServices();
 builder.Services.AddControllers();
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
+
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 

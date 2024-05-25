@@ -1,9 +1,5 @@
 ﻿using CsvParser.Db.DbEntities;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+
 
 namespace CsvParser.Db.Interfaces
 {
@@ -15,5 +11,9 @@ namespace CsvParser.Db.Interfaces
         public ApplicationTransaction GetTransaction(Guid id);
 
         public void DeleteTransaction(Guid id);
+
+        public bool IsSameCurrency(ApplicationTransaction transaction);
+
+        public bool IsUpdate(Guid id);
     }
 }
