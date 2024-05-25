@@ -7,6 +7,7 @@ using CsvParser.Service.Interfaces;
 using CsvParser.Service.Mapping;
 using CsvParser.Db.Interfaces;
 using System.ComponentModel.DataAnnotations;
+using CsvParser.Common.Models;
 
 namespace CsvParser.Service.Services
 {
@@ -78,6 +79,40 @@ namespace CsvParser.Service.Services
                 return false;
             }
         }
+
+        public async Task<PaginatedResult<ApplicationTransaction>> GetPaginatedTransactionsAsync(int page, int pageSize)
+        {
+            var transactions = await _transactionsRepository.GetTransactions(page, pageSize);
+            var totalTransactions = await _transactionsRepository.GetTotalTransactionCount();
+
+            return new PaginatedResult<ApplicationTransaction>
+            {
+                Items = transactions.ToList(),
+                TotalCount = totalTransactions,
+                PageSize = pageSize,
+                CurrentPage = page
+            };
+        }
+
+
+        public async Task<bool> DeleteTransactionAsync(Guid id)
+        {
+            var transaction = await _transactionsRepository.GetTransaction(id);
+            if (transaction == null)
+            {
+                return false; // Transaction not found
+            }
+
+            await _transactionsRepository.DeleteTransaction(id);
+            return true; // Transaction deleted successfully
+        }
+
+        public async Task<ApplicationTransaction> GetTransactionAsync(Guid id)
+        {
+            var transaction = await _transactionsRepository.GetTransaction(id);
+            return transaction; // Will be null if not found
+        }
+
         private bool IsSameCurrency(string existingAmount, string newAmount)
         {
             var existingCurrencySymbol = existingAmount[0];

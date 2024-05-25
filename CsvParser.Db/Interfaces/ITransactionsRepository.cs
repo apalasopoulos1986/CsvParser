@@ -15,5 +15,7 @@ namespace CsvParser.Db.Interfaces
         public Task<bool> IsSameCurrency(ApplicationTransaction transaction);
 
         public Task<bool> IsUpdate(Guid id);
+
+        public  Task<int> GetTotalTransactionCount();
     }
 }

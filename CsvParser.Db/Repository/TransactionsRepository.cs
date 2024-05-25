@@ -48,6 +48,7 @@ namespace CsvParser.Db.Repository
 
         private static string IsUpdateQuery = @" SELECT COUNT(1) FROM ApplicationTransactions WHERE Id = @Id ";
 
+        private static string GetTotalTransactionCountQuery = @"SELECT COUNT(*) FROM ApplicationTransactions;";
 
         public async Task UpsertTransaction(ApplicationTransaction transaction)
         {
@@ -95,6 +96,14 @@ namespace CsvParser.Db.Repository
             }
         }
 
+
+        public async Task<int> GetTotalTransactionCount()
+        {
+            using (var connection = _context.CreateConnection())
+            {
+                return await connection.QuerySingleOrDefaultAsync<int>(GetTotalTransactionCountQuery);
+            }
+        }
         public async Task<bool> IsSameCurrency(ApplicationTransaction transaction)
         {
             using (var connection = _context.CreateConnection())
