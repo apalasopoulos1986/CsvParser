@@ -49,57 +49,57 @@ namespace CsvParser.Db.Repository
         private static string IsUpdateQuery = @" SELECT COUNT(1) FROM ApplicationTransactions WHERE Id = @Id ";
 
 
-        public void UpsertTransaction(ApplicationTransaction transaction)
+        public async Task UpsertTransaction(ApplicationTransaction transaction)
         {
             using (var connection = _context.CreateConnection())
             {               
-                connection.Execute(UpsertTransactionsQuery, transaction);
+               await connection.ExecuteAsync(UpsertTransactionsQuery, transaction);
             }
         }
 
-        public IEnumerable<ApplicationTransaction> GetTransactions(int page, int pageSize)
+        public async Task<IEnumerable<ApplicationTransaction>> GetTransactions(int page, int pageSize)
         {
             using (var connection = _context.CreateConnection())
             {
 
-                return connection.Query<ApplicationTransaction>(GetTransactionsQuery, new { PageSize = pageSize, Offset = (page - 1) * pageSize });
+                return await connection.QueryAsync<ApplicationTransaction>(GetTransactionsQuery, new { PageSize = pageSize, Offset = (page - 1) * pageSize });
             }
         }
 
-        public ApplicationTransaction GetTransaction(Guid id)
+        public async Task<ApplicationTransaction> GetTransaction(Guid id)
         {
             using (var connection = _context.CreateConnection())
             {
                
-                return connection.QuerySingleOrDefault<ApplicationTransaction>(GetTransactionQuery, new { Id = id });
+                return await connection.QuerySingleOrDefaultAsync<ApplicationTransaction>(GetTransactionQuery, new { Id = id });
             }
         }
 
-        public void DeleteTransaction(Guid id)
+        public async Task  DeleteTransaction(Guid id)
         {
             using (var connection = _context.CreateConnection())
             {               
-                connection.Execute(DeleteTransactionQuery, new { Id = id });
+               await connection.ExecuteAsync(DeleteTransactionQuery, new { Id = id });
             }
         }
 
-      
 
-        public bool IsUpdate(Guid id)
+
+        public async Task<bool>  IsUpdate(Guid id)
         {
             using (var connection = _context.CreateConnection())
             {
-                var isUpdate= connection.QuerySingleOrDefault<int>(IsUpdateQuery, new { Id=id }) > 0;
+                var isUpdate= await  connection.QuerySingleOrDefaultAsync<int>(IsUpdateQuery, new { Id=id }) > 0;
 
                 return isUpdate;
             }
         }
 
-        public bool IsSameCurrency(ApplicationTransaction transaction)
+        public async Task<bool> IsSameCurrency(ApplicationTransaction transaction)
         {
             using (var connection = _context.CreateConnection())
             {
-                var existingCurrencyAmount = connection.QuerySingleOrDefault<ApplicationTransaction>(ExistingCurrencyAmountQuery, new { transaction.Id });
+                var existingCurrencyAmount = await connection.QuerySingleOrDefaultAsync<ApplicationTransaction>(ExistingCurrencyAmountQuery, new { transaction.Id });
 
                 if (existingCurrencyAmount == null) return true;
 

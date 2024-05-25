@@ -36,7 +36,7 @@ namespace CsvParser.Service.Services
                         {
                             record.Id = Guid.NewGuid(); 
                         }
-                        _transactionsRepository.UpsertTransaction(record);
+                      await  _transactionsRepository.UpsertTransaction(record);
                     }
                 }
                 return true;

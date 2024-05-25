@@ -5,15 +5,15 @@ namespace CsvParser.Db.Interfaces
 {
     public interface ITransactionsRepository
     {
-        public void UpsertTransaction(ApplicationTransaction transaction);
-        public IEnumerable<ApplicationTransaction> GetTransactions(int page, int pageSize);
+        public Task UpsertTransaction(ApplicationTransaction transaction);
+        public Task<IEnumerable<ApplicationTransaction>> GetTransactions(int page, int pageSize);
 
-        public ApplicationTransaction GetTransaction(Guid id);
+        public Task<ApplicationTransaction> GetTransaction(Guid id);
 
-        public void DeleteTransaction(Guid id);
+        public Task DeleteTransaction(Guid id);
 
-        public bool IsSameCurrency(ApplicationTransaction transaction);
+        public Task<bool> IsSameCurrency(ApplicationTransaction transaction);
 
-        public bool IsUpdate(Guid id);
+        public Task<bool> IsUpdate(Guid id);
     }
 }
