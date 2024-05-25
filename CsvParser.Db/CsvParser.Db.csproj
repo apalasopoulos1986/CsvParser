@@ -17,4 +17,8 @@
     <PackageReference Include="System.Data.SqlClient" Version="4.8.6" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\CsvParser.Common\CsvParser.Common.csproj" />
+  </ItemGroup>
+
 </Project>

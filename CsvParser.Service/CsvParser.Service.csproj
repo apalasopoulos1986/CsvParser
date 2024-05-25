@@ -12,6 +12,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\CsvParser.Common\CsvParser.Common.csproj" />
     <ProjectReference Include="..\CsvParser.Db\CsvParser.Db.csproj" />
   </ItemGroup>
 
