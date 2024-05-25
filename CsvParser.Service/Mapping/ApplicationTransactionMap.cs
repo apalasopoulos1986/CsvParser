@@ -14,7 +14,7 @@ namespace CsvParser.Service.Mapping
             Map(m => m.Filename);
             Map(m => m.Url);
             Map(m => m.Inception);
-            Map(m => m.Amount).TypeConverter<CustomDecimalConverter>();
+            Map(m => m.Amount);
             Map(m => m.Allocation);
         }
     }

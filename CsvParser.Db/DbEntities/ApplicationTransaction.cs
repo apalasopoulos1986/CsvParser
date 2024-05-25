@@ -10,7 +10,7 @@ namespace CsvParser.Db.DbEntities
         public string Filename { get; set; }
         public string Url { get; set; }
         public DateTime Inception { get; set; }
-        public decimal Amount { get; set; }
+        public string Amount { get; set; }
         public decimal? Allocation { get; set; }
     }
 }

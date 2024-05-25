@@ -8,6 +8,6 @@ CREATE TABLE ApplicationTransaction (
     Filename NVARCHAR(300) NULL ,
     Url NVARCHAR(2048) NULL ,
     Inception DATETIME NOT NULL ,
-    Amount MONEY NOT NULL, 
+    Amount NVARCHAR(200) NOT NULL, 
     Allocation DECIMAL(5, 2) NULL 
 );
