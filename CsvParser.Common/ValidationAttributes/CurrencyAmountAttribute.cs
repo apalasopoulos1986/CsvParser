@@ -10,7 +10,7 @@ namespace CsvParser.Common.ValidationAttributes
         {
             if (value != null)
             {
-                string pattern = @"^[A-Z]{1}[0-9,]+(\.[0-9]{1,2})?$";
+                string pattern = @"\$\d+\.\d{1,2}";
                 if (!Regex.IsMatch(value.ToString(), pattern))
                 {
                     return new ValidationResult("Invalid amount format. Must include currency symbol and amount.");

@@ -6,10 +6,11 @@ using Microsoft.AspNetCore.Http;
 using CsvParser.Service.Interfaces;
 using CsvParser.Service.Mapping;
 using CsvParser.Db.Interfaces;
+using System.ComponentModel.DataAnnotations;
 
 namespace CsvParser.Service.Services
 {
-    public class CsvTransactionParsingService:ICsvTransactionParsingService
+    public class CsvTransactionParsingService : ICsvTransactionParsingService
     {
 
         private readonly ITransactionsRepository _transactionsRepository;
@@ -20,6 +21,8 @@ namespace CsvParser.Service.Services
         }
         public async Task<bool> UploadCsvAsync(IFormFile file)
         {
+            var errors = new List<string>();
+            int totalRows = 0;
 
             try
             {
@@ -30,15 +33,42 @@ namespace CsvParser.Service.Services
 
                     var records = csv.GetRecords<ApplicationTransaction>().ToList();
 
-                    foreach (var record in records)
+                    totalRows = records.Count;
+                                      
+                    for (int index = 0; index < records.Count; index++)
                     {
+                        var record = records[index];
+
                         if (record.Id == Guid.Empty)
                         {
-                            record.Id = Guid.NewGuid(); 
+                            errors.Add($"Row {index + 1}: Record with empty Id found. Skipping this record.");
+                            continue;
                         }
-                      await  _transactionsRepository.UpsertTransaction(record);
+
+                        var validationResults = new List<ValidationResult>();
+                        var validationContext = new ValidationContext(record);
+
+                        if (!Validator.TryValidateObject(record, validationContext, validationResults, true))
+                        {
+                            errors.AddRange(validationResults.Select(vr => $"Row {index + 1}: {vr.ErrorMessage}"));
+                            continue;
+                        }
+
+                        var isUpdate = await _transactionsRepository.IsUpdate(record.Id);
+                        if (isUpdate)
+                        {
+                            var existingTransaction = await _transactionsRepository.GetTransaction(record.Id);
+                            if (!IsSameCurrency(existingTransaction.Amount, record.Amount))
+                            {
+                                errors.Add($"Row {index + 1}: Currency change is not allowed for transaction ID: {record.Id}");
+                                continue;
+                            }
+                        }
+                       
+                        await _transactionsRepository.UpsertTransaction(record);
                     }
                 }
+
                 return true;
             }
             catch (Exception ex)
@@ -48,9 +78,12 @@ namespace CsvParser.Service.Services
                 return false;
             }
         }
-
-      
-       
+        private bool IsSameCurrency(string existingAmount, string newAmount)
+        {
+            var existingCurrencySymbol = existingAmount[0];
+            var newCurrencySymbol = newAmount[0];
+            return existingCurrencySymbol == newCurrencySymbol;
+        }
 
     }
 }
