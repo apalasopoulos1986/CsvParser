@@ -1,5 +1,7 @@
-﻿using CsvParser.Common.ValidationAttributes;
+﻿using CsvParser.Common.HelperMethods;
+using CsvParser.Common.ValidationAttributes;
 using System.ComponentModel.DataAnnotations;
+using System.Text.Json.Serialization;
 
 namespace CsvParser.Db.DbEntities
 {
@@ -24,6 +26,7 @@ namespace CsvParser.Db.DbEntities
         public string Url { get; set; }
 
         [Required]
+        [JsonConverter(typeof(CustomDateTimeConverter))]
         [PastDate]
         public DateTime Inception { get; set; }
         [Required]

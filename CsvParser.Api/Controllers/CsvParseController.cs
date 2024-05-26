@@ -1,4 +1,5 @@
-﻿using CsvParser.Service.Interfaces;
+﻿using CsvParser.Common.Requests;
+using CsvParser.Service.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CsvParser.Api.Controllers
@@ -41,6 +42,21 @@ namespace CsvParser.Api.Controllers
             {
                 return StatusCode(500, $"Internal server error: {ex.Message}");
             }
+        }
+        /// <summary>
+        /// Upserts a single transaction
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns></returns>
+        [HttpPost("UpsertTransaction")]
+        public async Task<IActionResult> UpsertTransaction([FromBody] ApplicationTransactionUpsertRequest request)
+        {
+            var response = await _csvTransactionParsingService.UpsertTransactionAsync(request);
+
+            if (response.IsValid)
+                return Ok(response);
+            else
+                return BadRequest(response);
         }
 
         /// <summary>
