@@ -1,4 +1,5 @@
 using CsvParser.Api.Configuration;
+using CsvParser.Common.HelperMethods;
 using CsvParser.Db.Context;
 using CsvParser.Db.Interfaces;
 using CsvParser.Db.Repository;
@@ -8,7 +9,11 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddSingleton<DapperContext>();
 builder.Services.AddScoped<ITransactionsRepository,TransactionsRepository>();
 builder.Services.AddServices();
-builder.Services.AddControllers();
+builder.Services.AddControllers()
+    .AddJsonOptions(options =>
+    {
+        options.JsonSerializerOptions.Converters.Add(new EmptyStringToGuidConverter());
+    });
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();

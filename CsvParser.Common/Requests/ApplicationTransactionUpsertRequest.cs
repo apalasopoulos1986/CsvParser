@@ -1,10 +1,15 @@
-﻿using CsvParser.Common.ValidationAttributes;
+﻿using CsvParser.Common.HelperMethods;
+using CsvParser.Common.ValidationAttributes;
 using System.ComponentModel.DataAnnotations;
+using System.Text.Json.Serialization;
 
 namespace CsvParser.Common.Requests
 {
-    public class ApplicationTransactionCreationRequest
+    public class ApplicationTransactionUpsertRequest
     {
+        [JsonConverter(typeof(EmptyStringToGuidConverter))]
+        public Guid Id { get; set; } = Guid.Empty; 
+
         [Required]
         [MaxLength(200)]
         public string ApplicationName { get; set; }
