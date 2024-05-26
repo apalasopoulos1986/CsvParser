@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CsvParser.Common.Models
+namespace CsvParser.Common.Responses
 {
     public class GenericResponse
     {

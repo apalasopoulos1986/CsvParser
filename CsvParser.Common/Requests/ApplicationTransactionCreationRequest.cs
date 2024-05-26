@@ -1,7 +1,7 @@
 ﻿using CsvParser.Common.ValidationAttributes;
 using System.ComponentModel.DataAnnotations;
 
-namespace CsvParser.Common.Models
+namespace CsvParser.Common.Requests
 {
     public class ApplicationTransactionCreationRequest
     {

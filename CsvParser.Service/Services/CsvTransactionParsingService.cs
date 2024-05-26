@@ -7,7 +7,7 @@ using CsvParser.Service.Interfaces;
 using CsvParser.Service.Mapping;
 using CsvParser.Db.Interfaces;
 using System.ComponentModel.DataAnnotations;
-using CsvParser.Common.Models;
+using CsvParser.Common.Responses;
 
 namespace CsvParser.Service.Services
 {

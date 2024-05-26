@@ -1,5 +1,4 @@
-﻿
-namespace CsvParser.Common.Models
+﻿namespace CsvParser.Common.Responses
 {
     public class PaginatedResponse<T>
     {

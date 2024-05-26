@@ -1,4 +1,4 @@
-﻿using CsvParser.Common.Models;
+﻿using CsvParser.Common.Responses;
 using CsvParser.Db.DbEntities;
 using Microsoft.AspNetCore.Http;
 
