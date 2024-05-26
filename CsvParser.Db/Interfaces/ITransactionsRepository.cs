@@ -12,7 +12,7 @@ namespace CsvParser.Db.Interfaces
 
         public Task DeleteTransaction(Guid id);
 
-        public Task<bool> IsSameCurrency(ApplicationTransaction transaction);
+        public Task<bool> IsSameCurrencyFromDb(ApplicationTransaction transaction);
 
         public Task<bool> IsUpdate(Guid id);
 

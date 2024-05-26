@@ -104,7 +104,7 @@ namespace CsvParser.Db.Repository
                 return await connection.QuerySingleOrDefaultAsync<int>(GetTotalTransactionCountQuery);
             }
         }
-        public async Task<bool> IsSameCurrency(ApplicationTransaction transaction)
+        public async Task<bool> IsSameCurrencyFromDb(ApplicationTransaction transaction)
         {
             using (var connection = _context.CreateConnection())
             {

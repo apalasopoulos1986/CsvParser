@@ -9,7 +9,7 @@ namespace CsvParser.Service.Interfaces
     {
         public Task<bool> UploadCsvAsync(IFormFile file);
 
-        public Task<PaginatedResult<ApplicationTransaction>> GetPaginatedTransactionsAsync(int page, int pageSize);
+        public Task<PaginatedResponse<ApplicationTransaction>> GetPaginatedTransactionsAsync(int page, int pageSize);
 
         public Task<bool> DeleteTransactionAsync(Guid id);
 

@@ -6,14 +6,14 @@ using System.Threading.Tasks;
 
 namespace CsvParser.Common.Models
 {
-    public class GenericResult
+    public class GenericResponse
     {
         public bool IsValid { get; set; }
         public List<string> Errors { get; set; } = new List<string>();
 
-        public GenericResult() { }
+        public GenericResponse() { }
 
-        public GenericResult(bool isValid, List<string> errors)
+        public GenericResponse(bool isValid, List<string> errors)
         {
             IsValid = isValid;
             Errors = errors ?? new List<string>();

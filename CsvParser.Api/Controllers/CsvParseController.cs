@@ -13,7 +13,12 @@ namespace CsvParser.Api.Controllers
             _csvTransactionParsingService = csvTransactionParsingService;
         }
 
-        [HttpPost("upload")]
+        /// <summary>
+        /// Uploads csv with a collection of transactions 
+        /// </summary>
+        /// <param name="file"></param>
+        /// <returns></returns>
+        [HttpPost("UploadCsv")]
         public async Task<IActionResult> UploadCsv(IFormFile file)
         {
             if (file == null || file.Length == 0)
@@ -38,8 +43,13 @@ namespace CsvParser.Api.Controllers
             }
         }
 
-
-        [HttpGet("transactions")]
+        /// <summary>
+        /// Gets total valid transactions
+        /// </summary>
+        /// <param name="page"></param>
+        /// <param name="pageSize"></param>
+        /// <returns></returns>
+        [HttpGet("GetTotalTransactions")]
         public async Task<IActionResult> GetTransactions(int page = 1, int pageSize = 10)
         {
             if (page <= 0 || pageSize <= 0)
@@ -52,8 +62,12 @@ namespace CsvParser.Api.Controllers
             return Ok(paginatedResult);
         }
 
-
-        [HttpDelete("transaction/{id}")]
+        /// <summary>
+        /// Deletes a single transaction
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        [HttpDelete("DeleteTransaction/{id}")]
         public async Task<IActionResult> DeleteTransaction(Guid id)
         {
             var success = await _csvTransactionParsingService.DeleteTransactionAsync(id);
@@ -65,8 +79,12 @@ namespace CsvParser.Api.Controllers
 
             return Ok($"Transaction with ID {id} deleted successfully.");
         }
-
-        [HttpGet("transaction/{id}")]
+        /// <summary>
+        /// Gets single transaction
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        [HttpGet("GetTransaction/{id}")]
         public async Task<IActionResult> GetTransaction(Guid id)
         {
             var transaction = await _csvTransactionParsingService.GetTransactionAsync(id);

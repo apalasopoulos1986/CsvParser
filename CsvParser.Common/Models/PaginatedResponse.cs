@@ -1,7 +1,7 @@
 ﻿
 namespace CsvParser.Common.Models
 {
-    public class PaginatedResult<T>
+    public class PaginatedResponse<T>
     {
         public List<T> Items { get; set; }
         public int TotalCount { get; set; }

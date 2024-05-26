@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace CsvParser.Common.Models
 {
-    public class ApplicationTransactionRequest
+    public class ApplicationTransactionCreationRequest
     {
         [Required]
         [MaxLength(200)]

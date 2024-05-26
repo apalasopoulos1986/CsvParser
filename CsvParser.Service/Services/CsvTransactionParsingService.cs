@@ -59,7 +59,7 @@ namespace CsvParser.Service.Services
                         if (isUpdate)
                         {
                             var existingTransaction = await _transactionsRepository.GetTransaction(record.Id);
-                            if (!IsSameCurrency(existingTransaction.Amount, record.Amount))
+                            if (!IsSameCurrencyFromCsv(existingTransaction.Amount, record.Amount))
                             {
                                 errors.Add($"Row {index + 1}: Currency change is not allowed for transaction ID: {record.Id}");
                                 continue;
@@ -80,12 +80,12 @@ namespace CsvParser.Service.Services
             }
         }
 
-        public async Task<PaginatedResult<ApplicationTransaction>> GetPaginatedTransactionsAsync(int page, int pageSize)
+        public async Task<PaginatedResponse<ApplicationTransaction>> GetPaginatedTransactionsAsync(int page, int pageSize)
         {
             var transactions = await _transactionsRepository.GetTransactions(page, pageSize);
             var totalTransactions = await _transactionsRepository.GetTotalTransactionCount();
 
-            return new PaginatedResult<ApplicationTransaction>
+            return new PaginatedResponse<ApplicationTransaction>
             {
                 Items = transactions.ToList(),
                 TotalCount = totalTransactions,
@@ -113,7 +113,7 @@ namespace CsvParser.Service.Services
             return transaction; // Will be null if not found
         }
 
-        private bool IsSameCurrency(string existingAmount, string newAmount)
+        private bool IsSameCurrencyFromCsv(string existingAmount, string newAmount)
         {
             var existingCurrencySymbol = existingAmount[0];
             var newCurrencySymbol = newAmount[0];
