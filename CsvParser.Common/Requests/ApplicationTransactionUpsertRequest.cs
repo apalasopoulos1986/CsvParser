@@ -27,6 +27,7 @@ namespace CsvParser.Common.Requests
         public string Url { get; set; }
 
         [Required]
+        [JsonConverter(typeof(CustomDateTimeConverter))]
         [PastDate]
         public DateTime Inception { get; set; }
 

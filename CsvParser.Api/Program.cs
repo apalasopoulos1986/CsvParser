@@ -12,6 +12,7 @@ builder.Services.AddServices();
 builder.Services.AddControllers()
     .AddJsonOptions(options =>
     {
+        options.JsonSerializerOptions.Converters.Add(new CustomDateTimeConverter());
         options.JsonSerializerOptions.Converters.Add(new EmptyStringToGuidConverter());
     });
 
