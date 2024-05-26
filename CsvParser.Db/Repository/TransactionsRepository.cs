@@ -14,7 +14,7 @@ namespace CsvParser.Db.Repository
 
         public TransactionsRepository(DapperContext context)=>_context = context;
 
-        private static string UpsertTransactionsQuery = @" MERGE ApplicationTransactions AS target 
+        private static string UpsertTransactionQuery = @" MERGE ApplicationTransactions AS target 
                                                            USING (SELECT @Id AS Id) AS source
                                                            ON (target.Id = source.Id)
                                                            WHEN MATCHED THEN 
@@ -54,7 +54,7 @@ namespace CsvParser.Db.Repository
         {
             using (var connection = _context.CreateConnection())
             {               
-               await connection.ExecuteAsync(UpsertTransactionsQuery, transaction);
+               await connection.ExecuteAsync(UpsertTransactionQuery, transaction);
             }
         }
 
