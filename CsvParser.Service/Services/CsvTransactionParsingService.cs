@@ -36,7 +36,7 @@ namespace CsvParser.Service.Services
                     var records = csv.GetRecords<ApplicationTransaction>().ToList();
 
                     totalRows = records.Count;
-                                      
+
                     for (int index = 0; index < records.Count; index++)
                     {
                         var record = records[index];
@@ -66,7 +66,7 @@ namespace CsvParser.Service.Services
                                 continue;
                             }
                         }
-                       
+
                         await _transactionsRepository.UpsertTransaction(record);
                     }
                 }
@@ -75,8 +75,7 @@ namespace CsvParser.Service.Services
             }
             catch (Exception ex)
             {
-                // Log the exception
-                // _logger.LogError(ex, "Error processing CSV file.");
+
                 return false;
             }
         }
@@ -88,35 +87,45 @@ namespace CsvParser.Service.Services
             var validationResults = new List<ValidationResult>();
             var validationContext = new ValidationContext(request);
 
-            if (!Validator.TryValidateObject(request, validationContext, validationResults, true))
+            try
             {
-                errors.AddRange(validationResults.Select(vr => vr.ErrorMessage));
-                return new GenericResponse(false, errors);
-            }
 
-            var transaction = new ApplicationTransaction
-            {
-                Id = request.Id != Guid.Empty ? request.Id : Guid.NewGuid(),
-                ApplicationName = request.ApplicationName,
-                Email = request.Email,
-                Filename = request.Filename,
-                Url = request.Url,
-                Inception = request.Inception,
-                Amount = request.Amount,
-                Allocation = request.Allocation
-            };
-
-            if (request.Id != Guid.Empty) // Update scenario
-            {
-                if (!await _transactionsRepository.IsSameCurrencyFromDb(transaction))
+                if (!Validator.TryValidateObject(request, validationContext, validationResults, true))
                 {
-                    errors.Add("Currency change is not allowed for the existing transaction.");
+                    errors.AddRange(validationResults.Select(vr => vr.ErrorMessage));
                     return new GenericResponse(false, errors);
                 }
-            }
 
-            await _transactionsRepository.UpsertTransaction(transaction);
-            return new GenericResponse(true, null);
+                var transaction = new ApplicationTransaction
+                {
+                    Id = request.Id != Guid.Empty ? request.Id : Guid.NewGuid(),
+                    ApplicationName = request.ApplicationName,
+                    Email = request.Email,
+                    Filename = request.Filename,
+                    Url = request.Url,
+                    Inception = request.Inception,
+                    Amount = request.Amount,
+                    Allocation = request.Allocation
+                };
+
+                if (request.Id != Guid.Empty) // Update scenario
+                {
+                    if (!await _transactionsRepository.IsSameCurrencyFromDb(transaction))
+                    {
+                        errors.Add("Currency change is not allowed for the existing transaction.");
+                        return new GenericResponse(false, errors);
+                    }
+                }
+
+                await _transactionsRepository.UpsertTransaction(transaction);
+                return new GenericResponse(true, null);
+            }
+            catch (Exception ex)
+            {
+
+                errors.Add(ex.Message);
+                return new GenericResponse(false, errors);
+            }
         }
 
         public async Task<PaginatedResponse<ApplicationTransaction>> GetPaginatedTransactionsAsync(int page, int pageSize)
@@ -139,17 +148,17 @@ namespace CsvParser.Service.Services
             var transaction = await _transactionsRepository.GetTransaction(id);
             if (transaction == null)
             {
-                return false; // Transaction not found
+                return false; 
             }
 
             await _transactionsRepository.DeleteTransaction(id);
-            return true; // Transaction deleted successfully
+            return true;
         }
 
         public async Task<ApplicationTransaction> GetTransactionAsync(Guid id)
         {
             var transaction = await _transactionsRepository.GetTransaction(id);
-            return transaction; // Will be null if not found
+            return transaction; 
         }
 
         private bool IsSameCurrencyFromCsv(string existingAmount, string newAmount)
