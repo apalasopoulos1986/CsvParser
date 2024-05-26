@@ -9,6 +9,7 @@ using CsvParser.Db.Interfaces;
 using System.ComponentModel.DataAnnotations;
 using CsvParser.Common.Responses;
 using CsvParser.Common.Requests;
+using Microsoft.Extensions.Logging;
 
 namespace CsvParser.Service.Services
 {
@@ -16,10 +17,15 @@ namespace CsvParser.Service.Services
     {
 
         private readonly ITransactionsRepository _transactionsRepository;
-
-        public CsvTransactionParsingService(ITransactionsRepository transactionsRepository)
+        private readonly ILogger<CsvTransactionParsingService> _logger;
+        public CsvTransactionParsingService
+            (
+              ITransactionsRepository transactionsRepository,
+              ILogger<CsvTransactionParsingService> logger
+            )
         {
             _transactionsRepository = transactionsRepository;
+            _logger = logger;
         }
         public async Task<bool> UploadCsvAsync(IFormFile file)
         {
@@ -67,7 +73,12 @@ namespace CsvParser.Service.Services
                             }
                         }
 
+
                         await _transactionsRepository.UpsertTransaction(record);
+                    }
+                    if (errors.Any())
+                    {
+                        _logger.LogError($"Errors processing file {file.FileName}:\n{string.Join("\n", errors)}");
                     }
                 }
 
@@ -75,6 +86,9 @@ namespace CsvParser.Service.Services
             }
             catch (Exception ex)
             {
+
+                errors.Add(ex.Message);
+                _logger.LogError(ex, $"Error processing file {file.FileName}");
 
                 return false;
             }
@@ -124,6 +138,7 @@ namespace CsvParser.Service.Services
             {
 
                 errors.Add(ex.Message);
+                _logger.LogError(ex, "Error in UpsertTransaction");
                 return new GenericResponse(false, errors);
             }
         }
@@ -148,7 +163,7 @@ namespace CsvParser.Service.Services
             var transaction = await _transactionsRepository.GetTransaction(id);
             if (transaction == null)
             {
-                return false; 
+                return false;
             }
 
             await _transactionsRepository.DeleteTransaction(id);
@@ -158,7 +173,7 @@ namespace CsvParser.Service.Services
         public async Task<ApplicationTransaction> GetTransactionAsync(Guid id)
         {
             var transaction = await _transactionsRepository.GetTransaction(id);
-            return transaction; 
+            return transaction;
         }
 
         private bool IsSameCurrencyFromCsv(string existingAmount, string newAmount)
