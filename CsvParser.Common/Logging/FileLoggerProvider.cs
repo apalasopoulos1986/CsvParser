@@ -1,8 +1,9 @@
-﻿using Microsoft.Extensions.Logging;
+﻿using CsvParser.Common.ConfigSettings;
+using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 
 
-namespace CsvParser.Common
+namespace CsvParser.Common.Logging
 {
     public class FileLoggerProvider : ILoggerProvider
     {
@@ -21,8 +22,5 @@ namespace CsvParser.Common
         public void Dispose() { }
     }
 
-    public class FileLoggerOptions
-    {
-        public string Path { get; set; }
-    }
+   
 }

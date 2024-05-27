@@ -1,4 +1,5 @@
-﻿using CsvParser.Common;
+﻿using CsvParser.Common.ConfigSettings;
+using CsvParser.Common.Logging;
 
 namespace CsvParser.Api.Configuration
 {

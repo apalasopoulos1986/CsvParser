@@ -1,7 +1,6 @@
-﻿
-using Microsoft.Extensions.Logging;
+﻿using Microsoft.Extensions.Logging;
 
-namespace CsvParser.Common
+namespace CsvParser.Common.Logging
 {
     public class FileLogger : ILogger
     {
