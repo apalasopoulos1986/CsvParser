@@ -1,7 +1,7 @@
 CsvParser Api A .Net 8 Web Api Project that parses a CSV file with transaction data from various applications.
 It handles Upsert, Delete, Get operations for transactional data
 
-Technologies used:  C# (NET 8 Framework) ,SQL Server (2022 Edition),  Dapper (For ORM Functionalities), Csv Helper (for Csv Prsing capabilities).
+Technologies used:  C# (NET 8 Framework) ,SQL Server (2022 Edition),  Dapper (For ORM Functionalities), Csv Helper (for Csv Parsing capabilities).
 
 Installation / Basic Use
 
