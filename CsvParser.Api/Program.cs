@@ -8,7 +8,7 @@ var builder = WebApplication.CreateBuilder(args);
 // Configure logging
 builder.Logging.ClearProviders();
 builder.Logging.AddConsole();
-builder.Logging.AddFile(builder.Configuration.GetSection("Logging:File"));
+builder.Logging.AddLoggingFile(builder.Configuration.GetSection("Logging:File"));
 
 builder.Services.AddSingleton<DapperContext>();
 builder.Services.AddScoped<ITransactionsRepository,TransactionsRepository>();
