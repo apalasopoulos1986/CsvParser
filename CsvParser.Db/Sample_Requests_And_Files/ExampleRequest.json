@@ -1,0 +1,10 @@
+{
+  "id": "",
+  "applicationName": "Sample Application",
+  "email": "user@example.com",
+  "filename": "document.pdf",  
+  "url": "https://example.com",  
+  "inception": "5/26/2024",
+  "amount": "$100.00",  
+  "allocation": 100
+}
