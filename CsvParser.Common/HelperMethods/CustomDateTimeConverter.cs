@@ -11,8 +11,8 @@ namespace CsvParser.Common.HelperMethods
         {
             if (reader.TokenType == JsonTokenType.String)
             {
-                string dateString = reader.GetString();
-                if (DateTime.TryParseExact(dateString, _format, CultureInfo.InvariantCulture, DateTimeStyles.None, out var date))
+                string? dateString = reader.GetString();
+                if (!string.IsNullOrEmpty(dateString) && DateTime.TryParseExact(dateString, _format, CultureInfo.InvariantCulture, DateTimeStyles.None, out var date))
                 {
                     return date;
                 }
